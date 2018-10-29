@@ -6,12 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44ca9a95-98f7-424f-8c75-734c27d2d61b" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/scala_compiler.xml" afterPath="$PROJECT_DIR$/.idea/scala_compiler.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/SparkHbase.scala" afterPath="$PROJECT_DIR$/src/main/scala/SparkHbase.scala" />
-      <change beforePath="$PROJECT_DIR$/testredis.iml" afterPath="$PROJECT_DIR$/testredis.iml" />
-    </list>
+    <list default="true" id="44ca9a95-98f7-424f-8c75-734c27d2d61b" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -67,8 +62,8 @@
       <file leaf-file-name="SparkHbase_test.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/SparkHbase_test.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1779">
-              <caret line="207" column="0" lean-forward="true" selection-start-line="207" selection-start-column="0" selection-end-line="207" selection-end-column="0" />
+            <state relative-caret-position="264">
+              <caret line="106" column="11" lean-forward="true" selection-start-line="106" selection-start-column="11" selection-end-line="106" selection-end-column="11" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
               </folding>
@@ -80,7 +75,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/scala/SparkHbase.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="304">
-              <caret line="122" column="0" lean-forward="true" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
+              <caret line="103" column="0" lean-forward="true" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -859,12 +854,12 @@
       <workItem from="1540559749648" duration="1093000" />
       <workItem from="1540561012169" duration="22819000" />
       <workItem from="1540642009070" duration="15424000" />
-      <workItem from="1540785300728" duration="6326000" />
+      <workItem from="1540785300728" duration="6630000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="121057000" />
+    <option name="totallyTimeSpent" value="121361000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1169,15 +1164,15 @@
     <entry file="file://$PROJECT_DIR$/src/main/scala/SparkHbase.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
-          <caret line="122" column="0" lean-forward="true" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
+          <caret line="103" column="0" lean-forward="true" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/SparkHbase_test.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1779">
-          <caret line="207" column="0" lean-forward="true" selection-start-line="207" selection-start-column="0" selection-end-line="207" selection-end-column="0" />
+        <state relative-caret-position="264">
+          <caret line="106" column="11" lean-forward="true" selection-start-line="106" selection-start-column="11" selection-end-line="106" selection-end-column="11" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
           </folding>
