@@ -4,7 +4,7 @@
     <profile name="Maven 1" modules="testredis">
       <parameters>
         <parameter value="-dependencyfile" />
-        <parameter value="$PROJECT_DIR$/target/.scala_dependencies" />
+        <parameter value="F:\gitrepo\hbase2spark\target/.scala_dependencies" />
       </parameters>
     </profile>
   </component>

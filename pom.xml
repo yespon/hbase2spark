@@ -150,7 +150,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>SparkHbase</mainClass>
+                            <mainClass>HBase2Redis</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

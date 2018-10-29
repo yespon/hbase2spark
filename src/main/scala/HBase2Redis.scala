@@ -1,15 +1,10 @@
-package com.moji
-
-import com.moji.redis.RedisConnection
-import com.moji.redis.recipes.SimpleStorageRecipe
-import com.moji.utils.Constant
 import org.apache.commons.lang.StringUtils
+import org.apache.hadoop.hbase.{CellUtil, HBaseConfiguration}
 import org.apache.hadoop.hbase.HConstants.HBASE_RPC_TIMEOUT_KEY
 import org.apache.hadoop.hbase.client.Result
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable
 import org.apache.hadoop.hbase.mapreduce.TableInputFormat
 import org.apache.hadoop.hbase.util.Bytes
-import org.apache.hadoop.hbase.{CellUtil, HBaseConfiguration}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import redis.RedisConnection
@@ -30,9 +25,8 @@ import scala.collection.mutable.{ArrayBuffer, ListBuffer}
   *
   * @author Yespon Liu
   **/
-class ProfileService {
-
-  def ReadHBase(sparkSession: SparkSession): Unit = {
+object HBase2Redis {
+  def deal(sparkSession: SparkSession): Unit = {
     val sc = sparkSession.sparkContext
 
     //配置hbase相关参数
@@ -141,5 +135,8 @@ class ProfileService {
       .enableHiveSupport()
       .getOrCreate()
 
+    deal(spark)
+
+    spark.stop()
   }
 }
