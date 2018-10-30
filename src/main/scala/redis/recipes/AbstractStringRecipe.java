@@ -15,6 +15,14 @@ import redis.utils.JedisUtil;
  */
 public class AbstractStringRecipe extends BaseRecipe {
 
+    private JedisPool pool;
+
+    public AbstractStringRecipe(){}
+
+    public AbstractStringRecipe(JedisPool pool) {
+        this.pool = pool;
+    }
+
     public String get(String key) throws RedisException {
         byte[] bytes = get(key.getBytes());
         if (bytes == null) {
@@ -25,11 +33,10 @@ public class AbstractStringRecipe extends BaseRecipe {
     }
 
     public byte[] get(byte[] key) throws RedisException {
-        byte[] result = null;
-        JedisPool pool = RedisConnection.getInstance().getPool();
+        byte[] result;
         Jedis jedis = null;
         try {
-            jedis = pool.getResource();
+            jedis = this.pool.getResource();
             result = jedis.get(key);
         } catch (Exception e) {
             throw new RedisException(e.getMessage(), e);

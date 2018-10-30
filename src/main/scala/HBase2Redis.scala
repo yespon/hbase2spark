@@ -8,7 +8,9 @@ import org.apache.hadoop.hbase.util.Bytes
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import redis.RedisConnection
+import redis.clients.jedis.JedisPool
 import redis.recipes.SimpleStorageRecipe
+import redis.utils.JedisUtil
 import utils.Constant
 
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
@@ -26,7 +28,12 @@ import scala.collection.mutable.{ArrayBuffer, ListBuffer}
   * @author Yespon Liu
   **/
 object HBase2Redis {
-  def deal(sparkSession: SparkSession): Unit = {
+
+  /**
+    *
+    * @param sparkSession
+    */
+  def deal(sparkSession: SparkSession, pool: JedisPool): Unit = {
     val sc = sparkSession.sparkContext
 
     //配置hbase相关参数
@@ -85,15 +92,15 @@ object HBase2Redis {
         val tagTupleList = tagIdentifierTuple.groupBy(_._1)
         for (tag <- tagTupleList) {
           tags.append(Constant.COMMA_SPLIT)
-          tags.append(tag._2(0))
+          tags.append(tag._2(0)._2)
         }
       }
 
       //将不存在互斥条件的tag放入结果串中
-      for (tag <- tagList) {
-        if (StringUtils.isNumeric(tag)
-          && (!tag.startsWith("01") || !tag.startsWith("02")
-          || !tag.startsWith("701") || !tag.startsWith("702"))) {
+      for (tag <- tagList.filterNot(t => {
+        t.startsWith("01") || t.startsWith("02") || t.startsWith("701") || t.startsWith("702")
+      })) {
+        if (StringUtils.isNumeric(tag)) {
           tags.append(Constant.COMMA_SPLIT)
           tags.append(tag)
         }
@@ -105,18 +112,26 @@ object HBase2Redis {
 
 
     //对转换结果进行存入Redis操作
-    val recipe = new SimpleStorageRecipe();
     resultRDD.repartition(1000).foreachPartition(rows => {
       val kvs = new ArrayBuffer[String]()
+      val recipe = new SimpleStorageRecipe(pool)
       rows.foreach(row => {
         kvs.append(row._1)
         kvs.append(row._2.toString)
       })
-      recipe.mset(kvs.toArray:_*)
+      try {
+        recipe.mset(kvs.toArray:_*)
+      } finally {
+        JedisUtil.close(pool)
+      }
     })
-    RedisConnection.getInstance().disconnect();
+
   }
 
+  /**
+    *
+    * @param args
+    */
   def main(args: Array[String]): Unit = {
     //配置spark参数
     val job_name = "profile_service"
@@ -135,8 +150,11 @@ object HBase2Redis {
       .enableHiveSupport()
       .getOrCreate()
 
-    deal(spark)
+    val pool = RedisConnection.getInstance().getPool;
 
+    deal(spark, pool)
+
+    JedisUtil.close(pool)
     spark.stop()
   }
 }

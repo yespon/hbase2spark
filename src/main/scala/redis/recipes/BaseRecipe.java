@@ -14,13 +14,20 @@ import redis.clients.jedis.JedisPool;
  */
 public abstract class BaseRecipe {
 
+    private JedisPool pool;
+
+    public BaseRecipe(){}
+
+    public BaseRecipe(JedisPool pool) {
+        this.pool = pool;
+    }
+
     public void del(String key) throws RedisException {
         del(key.getBytes());
     }
 
     public void del(byte[] key) throws RedisException {
-        JedisPool pool = RedisConnection.getInstance().getPool();
-        Jedis jedis = null;
+        Jedis jedis;
         try {
             jedis = pool.getResource();
             jedis.del(key);

@@ -251,7 +251,7 @@
     <orderEntry type="module-library">
       <library name="Maven: jdk.tools:jdk.tools:1.8">
         <CLASSES>
-          <root url="jar://C:/Program Files/Java/jdk1.8.0_121/lib/tools.jar!/" />
+          <root url="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_171.jdk/Contents/Home/lib/tools.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -295,5 +295,6 @@
     <orderEntry type="library" name="Maven: org.scala-lang.modules:scala-xml_2.11:1.0.5" level="project" />
     <orderEntry type="library" name="Maven: org.scala-lang.modules:scala-parser-combinators_2.11:1.0.4" level="project" />
     <orderEntry type="library" name="Maven: com.typesafe.scala-logging:scala-logging_2.11:3.1.0" level="project" />
+    <orderEntry type="library" name="Maven: javax.jms:jms:1.1" level="project" />
   </component>
 </module>

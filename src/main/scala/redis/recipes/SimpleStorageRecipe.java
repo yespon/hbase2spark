@@ -15,15 +15,23 @@ import redis.utils.JedisUtil;
  */
 public class SimpleStorageRecipe extends AbstractStringRecipe {
 
+    private JedisPool pool;
+
+    public SimpleStorageRecipe(){}
+
+    public SimpleStorageRecipe(JedisPool pool) {
+        this.pool = pool;
+    }
+
     public void set(String key, String data) throws RedisException {
         set(key.getBytes(), data.getBytes());
     }
 
     public void set(byte[] key, byte[] data) throws RedisException {
-        JedisPool pool = RedisConnection.getInstance().getPool();
+
         Jedis jedis = null;
         try {
-            jedis = pool.getResource();
+            jedis = this.pool.getResource();
             jedis.set(key, data);
         } catch (Exception e) {
             throw new RedisException(e.getMessage(), e);
@@ -33,10 +41,10 @@ public class SimpleStorageRecipe extends AbstractStringRecipe {
     }
 
     public void mset(String... keysvalues) throws RedisException {
-        JedisPool pool = RedisConnection.getInstance().getPool();
+
         Jedis jedis = null;
         try {
-            jedis = pool.getResource();
+            jedis = this.pool.getResource();
             jedis.mset(keysvalues);
         } catch (Exception e) {
             throw new RedisException(e.getMessage(), e);
