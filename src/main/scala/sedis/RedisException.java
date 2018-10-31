@@ -1,4 +1,4 @@
-package redis;
+package sedis;
 
 /**
  * @ClassName RedisException

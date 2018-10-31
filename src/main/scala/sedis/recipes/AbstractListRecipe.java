@@ -1,4 +1,4 @@
-package redis.recipes;
+package sedis.recipes;
 
 /**
  * @ClassName AbstractListRecipe

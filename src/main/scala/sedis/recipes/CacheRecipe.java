@@ -1,13 +1,12 @@
-package redis.recipes;
+package sedis.recipes;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import redis.RedisConnection;
-import redis.RedisException;
+import sedis.RedisException;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Transaction;
-import redis.utils.JedisUtil;
+import sedis.utils.JedisUtil;
 
 import java.util.Date;
 

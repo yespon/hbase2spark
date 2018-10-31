@@ -7,10 +7,9 @@ import org.apache.hadoop.hbase.mapreduce.TableInputFormat
 import org.apache.hadoop.hbase.util.Bytes
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
-import redis.RedisConnection
-import redis.clients.jedis.JedisPool
-import redis.recipes.SimpleStorageRecipe
-import redis.utils.JedisUtil
+import redis.clients.jedis.{Jedis, JedisPool}
+import sedis.RedisConfig
+import sedis.utils.JedisUtil
 import utils.Constant
 
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
@@ -110,20 +109,51 @@ object HBase2Redis {
       res.toList
     })
 
+    //根据用户画像标签对标签串对应位置1
+    val jdbcDF = sparkSession.read.format("jdbc")
+      .options(Map("url" -> "jdbc:mysql://172.16.19.12:3316/profile?user=prfu1&password=uB86ufYe&useUnicode=true&characterEncoding=utf8",
+        "dbtable" -> "required_tag",
+        "driver" -> "com.mysql.jdbc.Driver")).load()
+    val df = jdbcDF.select("id", "tag_id")
+    val tagRDD = df.rdd.map(line => {
+      (line.get(0), line.get(1))
+    })
+    val tagMapList = tagRDD.map(_.swap).collect()
+    val tagMapper = tagMapList.toMap
+
 
     //对转换结果进行存入Redis操作
     resultRDD.repartition(1000).foreachPartition(rows => {
       val kvs = new ArrayBuffer[String]()
-      val recipe = new SimpleStorageRecipe(pool)
+//      val recipe = new SimpleStorageRecipe(pool)
+      val redisConfig: RedisConfig = new RedisConfig.Builder().build()
+      //      val rc = new Jedis("r-2ze5b49d36bd30a4.redis.rds.aliyuncs.com", 6379)
+      //      rc.auth("xg28KbjA")
+      //      rc.select(9)
+
+      val rc = new Jedis(redisConfig.getHost, redisConfig.getPort)
+      rc.auth(redisConfig.getPassword)
+      rc.select(redisConfig.getDatabase)
+
       rows.foreach(row => {
         kvs.append(row._1)
-        kvs.append(row._2.toString)
+        val tagsBuilder = new TagsBuilder
+        for (v <- row._2.split(",")) {
+          if (tagMapper.keySet.contains(v)) {
+            tagsBuilder.set(Int(tagMapper.get(v).getOrElse(0))-1)
+          }
+        }
+        kvs.append(tagsBuilder.getTagsString())
       })
       try {
-        recipe.mset(kvs.toArray:_*)
+//        recipe.mset(kvs.toArray:_*)
+        rc.mset(kvs.toArray:_*)
       } finally {
-        JedisUtil.close(pool)
+//        JedisUtil.close(pool)
+        rc.close()
+        sparkSession.stop()
       }
+
     })
 
   }
@@ -150,7 +180,7 @@ object HBase2Redis {
       .enableHiveSupport()
       .getOrCreate()
 
-    val pool = RedisConnection.getInstance().getPool;
+    val pool = sedis.RedisConnection.getInstance().getPool;
 
     deal(spark, pool)
 

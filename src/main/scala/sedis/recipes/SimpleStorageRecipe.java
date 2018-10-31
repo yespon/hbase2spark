@@ -1,10 +1,9 @@
-package redis.recipes;
+package sedis.recipes;
 
-import redis.RedisConnection;
-import redis.RedisException;
+import sedis.RedisException;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.utils.JedisUtil;
+import sedis.utils.JedisUtil;
 
 /**
  * @ClassName SimpleStorageRecipe
